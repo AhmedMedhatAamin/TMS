@@ -1,3 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <!-- Form View -->
+    <record id="view_viaggi_form" model="ir.ui.view">
+        <field name="name">tms.trip.view.form</field>
+        <field name="model">tms.trip</field>
+        <field name="arch" type="xml">
+            <form string="Viaggio">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="trip_type_id"/>
+                        <field name="customer_id"/>
+                    </group>
+
+                    <!-- Smart Button for Stops -->
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_stops" type="object" class="oe_stat_button">
+                            <field name="stop_count" widget="statinfo" string="Stops"/>
+                        </button>
+                    </div>
+
+                    <!-- Notebook for Stop Management -->
+                    <notebook>
+                        <page string="Stops">
+                            <field name="stop_ids">
+                                <list editable="bottom">
+                                    <field name="name"/>
+                                    <field name="arrival_time"/>
+                                    <field name="departure_time"/>
+                                    <field name="stop_address_id"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- List View -->
+    <record id="view_viaggi_list" model="ir.ui.view">
+        <field name="name">tms.trip.view.list</field>
+        <field name="model">tms.trip</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="trip_type_id"/>
+                <field name="customer_id"/>
+                <field name="stop_count" string="Stops"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Kanban View -->
+    <record id="view_trip_kanban" model="ir.ui.view">
+        <field name="name">trip.kanban</field>
+        <field name="model">tms.trip</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <field name="name"/>
+                <field name="trip_type_id"/>
+                <field name="customer_id"/>
+                <field name="stop_count"/>
+
+                <!-- Kanban Card Template -->
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="o_kanban_record">
+                            <div class="o_kanban_record_title">
+                                <strong><t t-esc="record.name.value"/></strong>
+                            </div>
+                            <div class="o_kanban_record_body">
+                                <div>Type: <t t-esc="record.trip_type_id.value"/></div>
+                                <div>Customer: <t t-esc="record.customer_id.value"/></div>
+                                <div>Stops: <t t-esc="record.stop_count.value"/></div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Pivot View -->
+    <record id="view_trip_pivot" model="ir.ui.view">
+        <field name="name">trip.pivot</field>
+        <field name="model">tms.trip</field>
+        <field name="arch" type="xml">
+            <pivot>
+                <field name="name"/>
+                <field name="trip_type_id"/>
+                <field name="customer_id"/>
+            </pivot>
+        </field>
+    </record>
+
+
+
 </odoo>

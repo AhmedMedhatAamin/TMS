@@ -1,0 +1,18 @@
+<odoo>
+    <data>
+        <!-- Extend the Contacts Form View -->
+        <record id="view_partner_form_inherit_tms" model="ir.ui.view">
+            <field name="name">res.partner.form.inherit.tms</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <!-- Add the Smart Button to the Button Box -->
+                <xpath expr="//div[@name='button_box']" position="inside">
+                    <button name="action_view_trips" type="object" class="oe_stat_button">
+                        <field name="trip_count" widget="statinfo" string="Trips"/>
+                    </button>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

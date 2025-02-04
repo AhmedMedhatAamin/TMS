@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "",
+    'name': "TMS",
     
-    'summary': "",
+    'summary': "(transport management system)",
   
     'license': 'OPL-1',
 
@@ -12,13 +12,18 @@
   
     'version': '18.0.0.1',
   
-    'website'METTERE LINK GITHUB completo: "https://github.com/ingegniamo",
+    'website': "https://github.com/ingegniamo/soa1_ahmed_tms",
 
     # any module necessary for this one to work correctly
-    'depends': [],
+    'depends': ['base'],
     
     # always loaded
-    'data': [],
+    'data': [  
+                'views/menu_views.xml',
+                'views/view.xml',
+                'views/res_partner_views.xml',
+                'views/trip_type_views.xml',
+        ],
 
     'application': False,
 }
