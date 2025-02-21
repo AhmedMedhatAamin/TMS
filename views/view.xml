@@ -1,16 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- Form View -->
+    <!-- Form View for tms.trip -->
     <record id="view_viaggi_form" model="ir.ui.view">
         <field name="name">tms.trip.view.form</field>
         <field name="model">tms.trip</field>
         <field name="arch" type="xml">
             <form string="Viaggio">
+                <header>
+                    <button name="action_start_trip" string="Start Trip" type="object" class="btn-primary"
+                            invisible="state != 'planned'"/>
+                    <button name="action_complete_trip" string="Complete Trip" type="object" class="btn-primary"
+                            invisible="state != 'in_progress'"/>
+                    <button name="action_say_ciao" string="Say Ciao" type="object" class="btn-secondary"/>
+                    <field name="state" widget="statusbar" statusbar_visible="planned,in_progress,completed"/>
+                </header>
+
                 <sheet>
                     <group>
-                        <field name="name"/>
-                        <field name="trip_type_id"/>
-                        <field name="customer_id"/>
+                        <group string="Trip Details">
+                            <field name="name"/>
+                            <field name="trip_type_id"/>
+                            <field name="customer_id"/>
+                            <field name="company_id"/>
+                            <field name="departure_date"/>
+                            <field name="arrival_date" invisible="not departure_date"/>
+                        </group>
+                        <group string="Locations">
+                            <field name="location_id"/>
+                            <field name="arrival" invisible="not location_id"/>
+                            <field name="note"/>
+                        </group>
+                        <group string="Unique Partners">
+                        <field name="unique_stops_with_partners" widget="many2many_tags"/>
+                        <field name="unique_stops_with_partners_italia" widget="many2many_tags"/>
+                        <button name="open_trip_info" type="object" string="View Trip Info" class="btn btn-primary"/>
+                        </group>
                     </group>
 
                     <!-- Smart Button for Stops -->
@@ -24,32 +48,115 @@
                     <notebook>
                         <page string="Stops">
                             <field name="stop_ids">
-                                <list editable="bottom">
-                                    <field name="name"/>
-                                    <field name="arrival_time"/>
+                                <tree editable="bottom">
+                                    <field name="stops_location_id"/>
                                     <field name="departure_time"/>
-                                    <field name="stop_address_id"/>
-                                </list>
+                                    <field name="arrival_time"/>
+                                </tree>
+                                <form>
+                                    <field name="stops_location_id"/>
+                                    <field name="departure_time"/>
+                                    <field name="arrival_time"/>
+                                </form>
                             </field>
                         </page>
                     </notebook>
 
+                    <!-- Chatter for Messages and Followers -->
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
                 </sheet>
             </form>
         </field>
     </record>
 
-    <!-- List View -->
-    <record id="view_viaggi_list" model="ir.ui.view">
-        <field name="name">tms.trip.view.list</field>
-        <field name="model">tms.trip</field>
-        <field name="arch" type="xml">
-            <list>
+        <!-- Tree View for tms.trip -->
+   <record id="view_viaggi_tree" model="ir.ui.view">
+    <field name="name">tms.trip.view.tree</field>
+    <field name="model">tms.trip</field>
+    <field name="arch" type="xml">
+        <tree default_order="departure_date desc">
                 <field name="name"/>
                 <field name="trip_type_id"/>
                 <field name="customer_id"/>
                 <field name="stop_count" string="Stops"/>
-            </list>
+                <field name="unique_stops_with_partners"/>
+                <field name="company_id"/>
+                <field name="state"/>
+                <button name="open_trip_info" type="object" string="View Trip Info" class="btn btn-primary"/>
+        </tree>
+        </field>
+    </record>
+
+
+    <!-- Search View for tms.trip -->
+    <record id="view_tms_trip_search" model="ir.ui.view">
+        <field name="name">tms.trip.search</field>
+        <field name="model">tms.trip</field>
+        <field name="arch" type="xml">
+            <search>
+                <!-- Search Filters -->
+                <filter string="Planned Trips" name="planned" domain="[('state', '=', 'planned')]"/>
+                <filter string="In Progress Trips" name="in_progress" domain="[('state', '=', 'in_progress')]"/>
+                <filter string="Completed Trips" name="completed" domain="[('state', '=', 'completed')]"/>
+
+                <!-- Group By Options -->
+                <group expand="1" string="Group By">
+                    <filter string="Customer" name="group_by_customer" context="{'group_by': 'customer_id'}"/>
+                    <filter string="Trip Type" name="group_by_trip_type" context="{'group_by': 'trip_type_id'}"/>
+                </group>
+
+                <!-- Search Fields -->
+                <field name="name" string="Trip Name"/>
+                <field name="customer_id" string="Customer"/>
+                <field name="trip_type_id" string="Trip Type"/>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action for tms.trip -->
+    <record id="action_tms_trip" model="ir.actions.act_window">
+        <field name="name">Trips</field>
+        <field name="res_model">tms.trip</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_tms_trip_search"/>
+    </record>
+
+    <!-- Stop Form View (tms.stop) -->
+    <record id="view_stop_form" model="ir.ui.view">
+        <field name="name">tms.stop.view.form</field>
+        <field name="model">tms.stop</field>
+        <field name="arch" type="xml">
+            <form string="Stop">
+                <sheet>
+                    <group>
+                        <field name="stops_location_id"/>
+                        <field name="departure_time"/>
+                        <field name="arrival_time"/>
+                        <field name="company_id"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Stop Tree View (tms.stop) -->
+    <record id="view_stop_tree" model="ir.ui.view">
+        <field name="name">tms.stop.view.tree</field>
+        <field name="model">tms.stop</field>
+        <field name="arch" type="xml">
+            <tree default_order="departure_date desc">
+                <header>
+                    <button name="%(action_delay_stops_wizard)d" string="Delay Times" type="action" class="btn-primary"/>
+                </header>
+                <field name="stops_location_id"/>
+                <field name="departure_time"/>
+                <field name="arrival_time"/>
+                <field name="company_id"/>
+                
+            </tree>
         </field>
     </record>
 
@@ -95,7 +202,4 @@
             </pivot>
         </field>
     </record>
-
-
-
 </odoo>

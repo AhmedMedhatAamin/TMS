@@ -1,25 +1,22 @@
-from odoo import models, fields
+from odoo import models, fields, api
+from odoo.exceptions import ValidationError
 
-class TmsStop(models.Model):
+class Stop(models.Model):
     _name = 'tms.stop'
-    _description = 'TMS Stop'
+    _description = 'Stop'
+    _order = 'departure_time asc'
 
-    name = fields.Char(string="Stop Name", required=True)
-    trip_id = fields.Many2one('tms.trip', string='Trip')
-    departure_time = fields.Datetime(string='Departure Time')
-    arrival_time = fields.Datetime(string='Arrival Time')
-    stop_address_id = fields.Many2one(
-        'res.partner',
-        string="Indirizzo dello Stop",
-        domain=[('type', '=', 'delivery')],
-        help="Select the stop address from contacts that are marked as 'Delivery Address'."
-    )
-
-    def action_view_stops(self):
-          return {
-            "type": "ir.actions.act_window",
-            "name": "Stops",
-            "res_model": "tms.stop",
-            "view_mode": "list,form",
-            "domain": [("trip_id", "=", self.id)],
-        }
+    name = fields.Char(string='Name')
+    sequence = fields.Integer(string="Sequence", default=10)
+    stops_location_id = fields.Many2one('res.partner', string="Stops")
+    departure_time = fields.Datetime(string="Departure Time")
+    arrival_time = fields.Datetime(string="Arrival Time")
+    trip_id = fields.Many2one('tms.trip', string="Trip")
+    company_id = fields.Many2one('res.company', string='Company', default=lambda self: self.env.company)
+                
+    @api.constrains('departure_time', 'arrival_time')
+    def _check_departure_arrival(self):
+        for stop in self.filtered(lambda s: s.departure_time or s.arrival_time):
+            if stop.departure_time and stop.arrival_time:
+                if stop.departure_time > stop.arrival_time:
+                    raise ValidationError("La data di partenza non può essere successiva alla data di arrivo.")

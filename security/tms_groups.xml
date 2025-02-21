@@ -1,0 +1,17 @@
+<odoo>
+    <data noupdate="1">
+        <!-- Manager Group -->
+        <record id="group_tms_manager" model="res.groups">
+            <field name="name">Manager</field>
+            <field name="category_id" ref="base.module_category_services"/>
+            <field name="implied_ids" eval="[ (4, ref('base.group_user')), (4, ref('base.group_multi_company')) ]"/>
+        </record>
+
+        <!-- Demo Visitors Group -->
+        <record id="group_tms_demo_visitors" model="res.groups">
+            <field name="name">Demo Visitors</field>
+            <field name="category_id" ref="base.module_category_services"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Trip Selection Template -->
+    <template id="trip_select_template" name="Select Trip">
+            <div class="container">
+                <h1>Select a Trip</h1>
+                <t t-if="trips">
+                    <ul>
+                        <t t-foreach="trips" t-as="trip">
+                            <li>
+                                <a t-att-href="'/trip/info/%s' % trip.id">
+                                    <t t-esc="trip.name"/>
+                                </a>
+                            </li>
+                        </t>
+                    </ul>
+                </t>
+                <t t-else="">
+                    <p>No trips available.</p>
+                </t>
+            </div>
+    </template>
+
+    <!-- Trip Info Template with Form -->
+    <template id="trip_template" name="Trip Details">
+            <div class="container">
+                <h1>Trip Details</h1>
+                <p>Name: <t t-esc="trip.name"/></p>
+                
+                <!-- Update Name Form -->
+                <form action="/trip/update_name" method="post">
+                    <input type="hidden" name="trip_id" t-att-value="trip.id"/>
+                    <div class="form-group">
+                        <label for="trip_name">Update Trip Name:</label>
+                        <input type="text" name="trip_name" class="form-control" 
+                               t-att-value="trip.name"/>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Update</button>
+                </form>
+            </div>
+    </template>
+</odoo>

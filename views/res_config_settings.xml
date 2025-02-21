@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form_tms" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.tms</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="inside">
+                <app string="TMS Settings" name="tms_settings">
+                    <block title="Transport Management System">
+                        <!-- Default Trip Type -->
+                        <setting id="default_trip_type" title="Default Trip Type">
+                            <field name="default_trip_type_id" string="Default Trip Type"/>
+                        </setting>
+                    </block>
+                </app>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Action for TMS Settings -->
+    <record id="tms_config_settings_action" model="ir.actions.act_window">
+        <field name="name">TMS Settings</field>
+        <field name="res_model">res.config.settings</field>
+        <field name="view_mode">form</field>
+        <field name="target">inline</field>
+        <field name="context">{'module': 'tms'}</field>
+    </record>
+
+    <!-- Menu Item for TMS Settings -->
+    <menuitem id="tms_menu_configuration"
+        name="TMS Settings"
+        parent="base.menu_custom"
+        action="tms_config_settings_action"
+        groups="base.group_system"/>
+</odoo>

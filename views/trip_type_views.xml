@@ -1,41 +1,80 @@
 <odoo>
     <data>
-
-        <!-- Form View for 'tms.trip.type' -->
-        <record id="view_tms_trip_type_form" model="ir.ui.view">
-            <field name="name">tms.trip.type.form</field>
+        <!-- Kanban View for 'tms.trip.type' -->
+        <record id="view_tms_trip_type_kanban" model="ir.ui.view">
+            <field name="name">tms.trip.type.kanban</field>
             <field name="model">tms.trip.type</field>
             <field name="arch" type="xml">
-                <form>
-                    <sheet>
-                        <group>
-                            <field name="name"/>
-                            <field name="trip_ids" readonly="1"/>
-                        </group>
-                        <!-- Smart Button -->
-                        <div class="oe_button_box" name="button_box">
-                            <button name="action_view_trips" type="object" class="oe_stat_button">
-                                <field name="trip_count" widget="statinfo" string="Trips"/>
-                            </button>
-
-                        </div>
-                    </sheet>
-                </form>
-            </field>
-        </record>
-
-        <!-- Tree View for 'tms.trip.type' -->
-        <record id="view_tms_trip_type_tree" model="ir.ui.view">
-            <field name="name">tms.trip.type.list</field>
-            <field name="model">tms.trip.type</field>
-            <field name="arch" type="xml">
-                <list>
-                    <field name="name"/>
+                <kanban class="o_kanban_dashboard o_emphasize_colors" create="0" group_create="false">
+                    <field name="color"/>
                     <field name="trip_count"/>
-                </list>
+                    <field name="has_trips"/>
+                    <templates>
+                        <t t-name="kanban-menu" t-if="!selection_mode">
+                          <div class="container" t-if="record.has_trips.raw_value">
+                                <div class="row">
+                                    <div class="col-6 o_kanban_card_manage_section o_kanban_manage_view">
+                                        <h5 role="menuitem" class="o_kanban_card_manage_title">
+                                            <span t-if="record.has_trips.raw_value == 'internal'">Transfers</span>
+                                            <span t-else="">View</span>
+                                        </h5>
+                                        <div role="menuitem">
+                                            <a type="object" name="action_view_in_progress_trips">in_progress</a>
+                                        </div>
+                                        <div role="menuitem">
+                                            <a type="object" name="action_view_completed_trips">completed</a>
+                                        </div>
+                                        <div role="menuitem">
+                                            <a type="object" name="action_view_planned_trips">planned</a>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 o_kanban_card_manage_section o_kanban_manage_new">
+                                        <h5 role="menuitem" class="o_kanban_card_manage_title">
+                                            <a name="action_form_trip" type="object">New</a>
+                                        </h5>
+                                    </div>
+                                </div>
+                            
+                                <div t-if="widget.editable" class="o_kanban_card_manage_settings row">
+                                  <div class="col-8" role="menuitem" aria-haspopup="true">
+                                    <ul class="oe_kanban_colorpicker" data-field="color" role="menu"/>
+                                </div>
+                            </div>
+                          </div>
+                        </t>
+
+                        <t t-name="kanban-box">
+                            <div t-attf-class="oe_kanban_card #{kanban_color(record.color.raw_value)}">
+                                <div class="o_kanban_card_header">
+                                    <div class="o_kanban_card_header_title">
+                                        <div class="o_primary">
+                                            <a name="action_open_trips" type="object">
+                                                <field name="name"/>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="container o_kanban_card_content" t-if="!selection_mode">
+                                    <div class="row">
+                                        <div class="col-6 o_kanban_primary_left">
+                                            <button class="btn btn-primary my-view-trips-btn" name="action_open_trips" type="object">
+                                                <span>View Trips</span>
+                                            </button>
+                                        </div>
+                                        <div class="col-6 o_kanban_primary_right">
+                                            <div t-if="record.trip_count.raw_value > 0" class="row">
+                                                <div class="col-12">
+                                                    <span><t t-esc="record.trip_count.raw_value"/> Trips</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
             </field>
         </record>
-
-
     </data>
 </odoo>

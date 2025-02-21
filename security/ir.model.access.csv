@@ -1,0 +1,9 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_tms_trip_manager,tms.trip.manager,model_tms_trip,group_tms_manager,1,1,1,1
+access_tms_trip_manager_admin,tms.trip.manager.admin,model_tms_trip,base.group_system,1,1,1,1
+access_tms_stop_manager,tms.stop.manager,model_tms_stop,group_tms_manager,1,1,1,1
+access_tms_stop_manager_admin,tms.stop.manager.admin,model_tms_stop,base.group_system,1,1,1,1
+access_tms_trip_type_manager,tms.trip.type.manager,model_tms_trip_type,group_tms_manager,1,1,1,1
+access_tms_trip_type_admin,tms.trip.type.admin,model_tms_trip_type,base.group_system,1,1,1,1
+access_tms_delay_wizard_manager,tms.delay.wizard.manager,model_tms_delay_wizard,group_tms_manager,1,1,1,1
+access_tms_trip_user,tms.trip.user,model_tms_trip,base.group_user,1,0,0,0

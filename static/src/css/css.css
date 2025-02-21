@@ -1,0 +1,20 @@
+/* Add styles for the Kanban card */
+.my-kanban-card {
+    background-color: #f0f8ff;  /* Example background color */
+    border-radius: 8px;
+    padding: 15px;
+}
+
+/* Add styles for the button inside the Kanban card */
+.my-view-trips-btn {
+    background-color: #007bff;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+/* Hover effect for the button */
+.my-view-trips-btn:hover {
+    background-color: #0056b3;
+}

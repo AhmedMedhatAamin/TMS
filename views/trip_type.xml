@@ -1,0 +1,43 @@
+<odoo>
+    <data>
+
+        <!-- Form View for 'tms.trip.type' -->
+        <record id="view_tms_trip_type_form" model="ir.ui.view">
+            <field name="name">tms.trip.type.form</field>
+            <field name="model">tms.trip.type</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="trip_ids" readonly="1"/>
+                            <field name="company_id"/>
+                            
+                        </group>
+                        <!-- Smart Button -->
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_view_trips" type="object" class="oe_stat_button">
+                                <field name="trip_count" widget="statinfo" string="Trips"/>
+                            </button>
+
+                        </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Tree View for 'tms.trip.type' -->
+        <record id="view_tms_trip_type_tree" model="ir.ui.view">
+            <field name="name">tms.trip.type.tree</field>
+            <field name="model">tms.trip.type</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="trip_count"/>
+                </tree>
+            </field>
+        </record>
+
+
+    </data>
+</odoo>

@@ -17,7 +17,7 @@ class ResPartner(models.Model):
             'type': 'ir.actions.act_window',
             'name': 'Trips',
             'res_model': 'tms.trip',
-            'view_mode': 'list,form',
+            'view_mode': 'tree,form',
             'domain': [('customer_id', '=', self.id)],
             'context': {'default_customer_id': self.id},
         }
